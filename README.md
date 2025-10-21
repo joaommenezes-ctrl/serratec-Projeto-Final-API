@@ -94,7 +94,7 @@ A funcionalidade utiliza o `Spring Boot Starter Mail` com servidor SMTP configur
 ## 👥 Integrantes do Projeto
 
 | Nome |
-|------|------------------------|
+|------|
 | **João Menezes** |
 | **Willian José** |
 | **José Arthur** |

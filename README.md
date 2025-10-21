@@ -42,7 +42,7 @@ Além das operações básicas de CRUD, o sistema integra serviços externos, re
 | **Spring Boot** | Framework base da aplicação |
 | **Spring Web** | Criação dos endpoints REST |
 | **Spring Data JPA** | Acesso e manipulação do banco de dados |
-| **H2 Database** | Banco de dados em memória para testes |
+| **PostgreSQL** | Banco de dados |
 | **Spring Boot Starter Mail** | Envio de e-mails |
 | **RestTemplate** | Consumo da API ViaCEP |
 | **Swagger (Springdoc OpenAPI)** | Documentação e testes da API |

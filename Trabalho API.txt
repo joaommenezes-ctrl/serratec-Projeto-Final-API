@@ -1,0 +1,38 @@
+├── domain              ← suas entidades JPA (tabelas)
+│   ├── Categoria.java
+│   ├── Produto.java
+│   ├── Cliente.java
+│   ├── Pedido.java
+│   └── ItemPedido.java
+│
+├── repository           ← interfaces que estendem JpaRepository
+│   ├── CategoriaRepository.java
+│   ├── ProdutoRepository.java
+│   ├── ClienteRepository.java
+│   ├── PedidoRepository.java
+│   └── ItemPedidoRepository.java
+│
+├── service              ← regras de negócio
+│   ├── CategoriaService.java
+│   ├── ProdutoService.java
+│   ├── ClienteService.java
+│   ├── PedidoService.java
+│   └── EmailService.java
+│
+├── controller           ← endpoints REST
+│   ├── CategoriaController.java
+│   ├── ProdutoController.java
+│   ├── ClienteController.java
+│   └── PedidoController.java
+│
+├── dto                  ← objetos de transferência (DTOs)
+│   ├── CategoriaDTO.java
+│   ├── ProdutoDTO.java
+│   ├── ClienteDTO.java
+│   └── PedidoDTO.java
+│
+├── exception            ← tratamento de erros
+│   ├── GlobalExceptionHandler.java
+│   ├── ClienteNotFoundException.java
+│   └── ProdutoNotFoundException.java
+│

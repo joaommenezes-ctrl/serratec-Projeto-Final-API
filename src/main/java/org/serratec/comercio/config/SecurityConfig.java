@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,38 +35,37 @@ public class SecurityConfig {
     private JwtUtil jwtUtil;
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
     @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
-        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authManager, jwtUtil);
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+                .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
+                .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(HttpMethod.POST, "/usuario", "/login").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/categoria/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
+
+                        .requestMatchers("/clientes/**").hasRole("CLIENTE")
+                        .requestMatchers("/pedidos/**").hasRole("CLIENTE")
+                        .requestMatchers("/endereco/**").hasRole("CLIENTE")
+                        .anyRequest().authenticated())
+                .httpBasic(Customizer.withDefaults())
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(
+                authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)), jwtUtil);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
-        JwtAuthorizationFilter jwtAuthorizationFilter = new JwtAuthorizationFilter(authManager, jwtUtil, userDetailsService);
+        JwtAuthorizationFilter jwtAuthorizationFIlter = new JwtAuthorizationFilter(
+                authenticationManager(http.getSharedObject(AuthenticationConfiguration.class)),
+                jwtUtil, userDetailsService);
 
-        http
-            .csrf(csrf -> csrf.disable())
-            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authorizeHttpRequests(auth -> auth
-  
-                .requestMatchers(HttpMethod.POST, "/usuario", "/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/categoria/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
-
-             
-                .requestMatchers("/clientes/**").hasRole("CLIENTE")
-                .requestMatchers("/pedidos/**").hasRole("CLIENTE")
-                .requestMatchers("/endereco/**").hasRole("CLIENTE")
-
-              
-                .anyRequest().authenticated()
-            )
-            .authenticationProvider(daoAuthenticationProvider())
-            .addFilter(jwtAuthenticationFilter)
-            .addFilter(jwtAuthorizationFilter);
+        http.addFilter(jwtAuthenticationFilter);
+        http.addFilter(jwtAuthorizationFIlter);
 
         return http.build();
     }
@@ -73,7 +73,7 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+        corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:8000"));
         corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
         corsConfiguration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         corsConfiguration.setAllowCredentials(true);
@@ -88,11 +88,4 @@ public class SecurityConfig {
         return new BCryptPasswordEncoder();
     }
 
-    @Bean
-    public DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return provider;
-    }
 }

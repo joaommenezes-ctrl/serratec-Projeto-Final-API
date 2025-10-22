@@ -30,24 +30,24 @@ public class UsuarioController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-//    @PostMapping("/login")
-//    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
-//        try {
-//            Authentication authentication = authenticationManager.authenticate(
-//                    new UsernamePasswordAuthenticationToken(
-//                            loginDTO.getUsername(),
-//                            loginDTO.getPassword()
-//                    )
-//            );
-//
-//            Usuario usuario = (Usuario) authentication.getPrincipal();
-//            String token = jwtUtil.generateToken(usuario.getUsername());
-//
-//            return ResponseEntity.ok().body("Bearer " + token);
-//        } catch (AuthenticationException e) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos");
-//        }
-//    }
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginDTO loginDTO) {
+        try {
+            Authentication authentication = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                           loginDTO.getUsername(),
+                            loginDTO.getPassword()
+                    )
+            );
+
+            Usuario usuario = (Usuario) authentication.getPrincipal();
+            String token = jwtUtil.generateToken(usuario.getUsername());
+
+            return ResponseEntity.ok().body("Bearer " + token);
+        } catch (AuthenticationException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuário ou senha inválidos");
+        }
+    }
 
     @PostMapping
     public ResponseEntity<?> registrar(@RequestBody Usuario usuario) {

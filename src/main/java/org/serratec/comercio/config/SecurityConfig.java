@@ -26,44 +26,41 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-	
+
     @Autowired
     private UserDetailsService userDetailsService;
 
     @Autowired
     private JwtUtil jwtUtil;
 
-    
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-  
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager authManager) throws Exception {
-
-      
-        JwtAuthenticationFilter jwtAuthenticationFilter =
-                new JwtAuthenticationFilter(authManager, jwtUtil);
+        JwtAuthenticationFilter jwtAuthenticationFilter = new JwtAuthenticationFilter(authManager, jwtUtil);
         jwtAuthenticationFilter.setFilterProcessesUrl("/login");
 
-        JwtAuthorizationFilter jwtAuthorizationFilter =
-                new JwtAuthorizationFilter(authManager, jwtUtil, userDetailsService);
+        JwtAuthorizationFilter jwtAuthorizationFilter = new JwtAuthorizationFilter(authManager, jwtUtil, userDetailsService);
 
         http
             .csrf(csrf -> csrf.disable())
             .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-           
-                .requestMatchers(HttpMethod.POST, "/usuarios").permitAll()
-                .requestMatchers(HttpMethod.POST, "/login").permitAll()
-                .requestMatchers(HttpMethod.GET, "/enderecos/**").permitAll()
-                .requestMatchers(HttpMethod.GET, "/clientes").permitAll()
-                .requestMatchers(HttpMethod.GET, "/usuarios/{id}").hasAuthority("ADMIN")
-                .requestMatchers(HttpMethod.GET, "/clientes/nome").hasAnyAuthority("ADMIN", "USER")
+  
+                .requestMatchers(HttpMethod.POST, "/usuario", "/login").permitAll()
+                .requestMatchers(HttpMethod.GET, "/categoria/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
 
+             
+                .requestMatchers("/clientes/**").hasRole("CLIENTE")
+                .requestMatchers("/pedidos/**").hasRole("CLIENTE")
+                .requestMatchers("/endereco/**").hasRole("CLIENTE")
+
+              
                 .anyRequest().authenticated()
             )
             .authenticationProvider(daoAuthenticationProvider())
@@ -73,7 +70,6 @@ public class SecurityConfig {
         return http.build();
     }
 
- 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();

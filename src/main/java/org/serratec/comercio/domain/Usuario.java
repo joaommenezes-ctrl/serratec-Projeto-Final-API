@@ -19,7 +19,7 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Usuario implements UserDetails, Serializable {
@@ -39,8 +39,8 @@ public class Usuario implements UserDetails, Serializable {
 	@Column
 	private String senha;
 	
-	@OneToMany(mappedBy = "id.usuario", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	private Set<UsuarioCliente> usuarioClientes = new HashSet<>();
+	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Cliente cliente;
 
 
 	public Usuario() {
@@ -95,25 +95,27 @@ public class Usuario implements UserDetails, Serializable {
 	public String getUsername() {
 		return email;
 	}
-	
-	
 
-	public Set<UsuarioCliente> getUsuarioClientes() {
-		return usuarioClientes;
+	public Cliente getCliente() {
+		return cliente;
 	}
 
-	public void setUsuarioClientes(Set<UsuarioCliente> usuarioClientes) {
-		this.usuarioClientes = usuarioClientes;
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
 	}
+	
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		List<GrantedAuthority> authorities = new ArrayList<>();
-		for(UsuarioCliente usuariocliente: getUsuarioClientes()) {
-			authorities.add(new SimpleGrantedAuthority(usuariocliente.getId().getCliente().getNome()));
-		}
-		return authorities;
+	    List<GrantedAuthority> authorities = new ArrayList<>();
+	    if (cliente != null && cliente.getRole() != null) {
+	        String role = cliente.getRole().toUpperCase();
+	        if (!role.startsWith("ROLE_")) {
+	            role = "ROLE_" + role;
+	        }
+	        authorities.add(new SimpleGrantedAuthority(role));
+	    }
+	    return authorities;
 	}
-
 
 }

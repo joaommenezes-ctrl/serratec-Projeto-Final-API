@@ -1,5 +1,6 @@
 package org.serratec.comercio.domain;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +32,21 @@ public class Cliente {
 	@OneToOne
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
+	
+	@OneToOne(cascade= CascadeType.ALL)
+	@JoinColumn(name = "usuario_id", referencedColumnName = "id")
+	private Usuario usuario;
+	
+	private String role;
+	
+
+	public String getRole() {
+		return role;
+	}
+
+	public void setRole(String role) {
+		this.role = role;
+	}
 
 	public Long getId() {
 		return id;
@@ -79,5 +95,15 @@ public class Cliente {
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
 	}
+
+	public Usuario getUsuario() {
+		return usuario;
+	}
+
+	public void setUsuario(Usuario usuario) {
+		this.usuario = usuario;
+	}
+	
+	
 
 }

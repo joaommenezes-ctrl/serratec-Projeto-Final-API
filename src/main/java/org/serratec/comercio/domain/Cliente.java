@@ -1,28 +1,36 @@
 package org.serratec.comercio.domain;
 
+import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
+@Entity
 public class Cliente {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	
+
 	@NotBlank
 	private String nome;
-	
+
 	@NotBlank
 	private String cpf;
-	
+
 	@NotBlank
 	private String telefone;
-	
+
 	@Email
 	private String email;
+
+	@OneToOne
+	@JoinColumn(name = "endereco_id")
+	private Endereco endereco;
 
 	public Long getId() {
 		return id;
@@ -63,6 +71,13 @@ public class Cliente {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
-	
+
+	public Endereco getEndereco() {
+		return endereco;
+	}
+
+	public void setEndereco(Endereco endereco) {
+		this.endereco = endereco;
+	}
+
 }

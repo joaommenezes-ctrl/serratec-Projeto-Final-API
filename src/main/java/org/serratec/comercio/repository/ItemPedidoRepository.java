@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface ItemPedidoRepository extends JpaRepository<ItemPedido, Long>{
 
-    List<ItemPedido> findByPedidoid(Long pedidoId);
+    List<ItemPedido> findByPedidoId(Long id);
 
-    List<ItemPedido> findByProdutoid(Long produtoId);
+    List<ItemPedido> findByProdutoId(Long id);
 
 }

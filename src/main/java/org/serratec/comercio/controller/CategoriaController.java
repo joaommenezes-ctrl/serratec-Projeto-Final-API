@@ -1,7 +1,6 @@
 package org.serratec.comercio.controller;
 
 import org.serratec.comercio.dto.CategoriaDTO;
-import org.serratec.comercio.dto.ProdutoDTO;
 import org.serratec.comercio.service.CategoriaService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

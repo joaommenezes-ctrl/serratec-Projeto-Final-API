@@ -1,50 +1,78 @@
 package org.serratec.comercio.service;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 import org.serratec.comercio.domain.Pedido;
+import org.serratec.comercio.domain.Cliente;
+import org.serratec.comercio.domain.ItemPedido;
 import org.serratec.comercio.dto.PedidoDTO;
 import org.serratec.comercio.repository.PedidoRepository;
+import org.serratec.comercio.repository.ClienteRepository;
+import org.serratec.comercio.repository.ItemPedidoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class PedidoService {
+
+    @Autowired
     private PedidoRepository pedidoRepository;
 
-    /* public PedidoService(PedidoRepository pedidoRepository) {
-        this.pedidoRepository = pedidoRepository;
-    }
+    @Autowired
+    private ClienteRepository clienteRepository;
 
-    public List<PedidoDTO> listar() {
-        return pedidoRepository.findAll()
-                .stream()
-                .map(PedidoDTO::new)
+    @Autowired
+    private ItemPedidoRepository itemPedidoRepository;
+
+    public List<PedidoDTO> listarTodos() {
+        return pedidoRepository.findAll().stream()
+                .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public PedidoDTO buscar(Long id) {
-        Pedido pedido = pedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com ID: " + id));
-        return new PedidoDTO(pedido);
+    public PedidoDTO buscarPorId(Long id) {
+        Optional<Pedido> pedido = pedidoRepository.findById(id);
+        return pedido.map(this::toDTO).orElse(null);
     }
 
     public PedidoDTO salvar(PedidoDTO dto) {
         Pedido pedido = new Pedido();
+        pedido.setDataPedido(dto.getDataPedido());
+        pedido.setStatusPedido(dto.getStatusPedido());
 
-        return new PedidoDTO(salvo);
-    }
+        if (dto.getClienteId() != null) {
+            Cliente cliente = clienteRepository.findById(dto.getClienteId()).orElse(null);
+            pedido.setCliente(cliente);
+        }
 
-    public PedidoDTO atualizar(Long id, PedidoDTO dto) {
-        Pedido pedido = pedidoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido não encontrado com ID: " + id));
+        if (dto.getItensIds() != null) {
+            List<ItemPedido> itens = itemPedidoRepository.findAllById(dto.getItensIds());
+            pedido.setItens(itens);
+        }
 
-        return new PedidoDTO(atualizado);
+        pedidoRepository.save(pedido);
+        return toDTO(pedido);
     }
 
     public void deletar(Long id) {
-        if (!pedidoRepository.existsById(id)) {
-            throw new RuntimeException("Pedido não encontrado com ID: " + id);
-        }
         pedidoRepository.deleteById(id);
-    } */
+    }
+
+    private PedidoDTO toDTO(Pedido pedido) {
+        List<Long> itensIds = pedido.getItens() != null
+                ? pedido.getItens().stream().map(ItemPedido::getId).collect(Collectors.toList())
+                : null;
+
+        Long clienteId = pedido.getCliente() != null ? pedido.getCliente().getId() : null;
+
+        return new PedidoDTO(
+                pedido.getId(),
+                pedido.getDataPedido(),
+                pedido.getStatusPedido(),
+                clienteId,
+                itensIds
+        );
+    }
 }

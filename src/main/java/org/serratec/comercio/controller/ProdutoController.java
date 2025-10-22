@@ -1,7 +1,7 @@
 package org.serratec.comercio.controller;
 
 
-import org.serratec.comercio.dto.CategoriaDTO;
+
 import org.serratec.comercio.service.ProdutoService;
 import org.serratec.comercio.dto.ProdutoDTO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +13,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/produtos")
 public class ProdutoController {
+	
     @Autowired
     private ProdutoService produtoService;
 

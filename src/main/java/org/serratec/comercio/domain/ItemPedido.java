@@ -1,72 +1,61 @@
 package org.serratec.comercio.domain;
 
-import java.math.BigDecimal;
-
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class ItemPedido {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	@ManyToOne
-	@JoinColumn(name = "pedido_id")
-	private Pedido pedido;
-	
-	@ManyToOne
-	@JoinColumn(name = "produto_id")
-	private Produto produto;
-	
-	private Integer quantidade;
-	
-	private BigDecimal ValorVenda;
 
-	public Long getId() {
-		return id;
-	}
+    @EmbeddedId
+    private ItemPedidoPK id = new ItemPedidoPK();
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private Integer quantidade;
+    private Double valorVenda;
 
-	public Pedido getPedido() {
-		return pedido;
-	}
+    public ItemPedido() {}
 
-	public void setPedido(Pedido pedido) {
-		this.pedido = pedido;
-	}
+    public ItemPedido(ItemPedidoPK id, Integer quantidade, Double valorVenda) {
+        this.id = id;
+        this.quantidade = quantidade;
+        this.valorVenda = valorVenda;
+    }
 
-	public Produto getProduto() {
-		return produto;
-	}
+    public ItemPedido(Pedido pedido, Produto produto, Integer quantidade, Double valorVenda) {
+        this.id.setPedido(pedido);
+        this.id.setProduto(produto);
+        this.quantidade = quantidade;
+        this.valorVenda = valorVenda;
+    }
 
-	public void setProduto(Produto produto) {
-		this.produto = produto;
-	}
+    public ItemPedidoPK getId() {
+        return id;
+    }
 
-	public Integer getQuantidade() {
-		return quantidade;
-	}
+    public void setId(ItemPedidoPK id) {
+        this.id = id;
+    }
 
-	public void setQuantidade(Integer quantidade) {
-		this.quantidade = quantidade;
-	}
+    public Integer getQuantidade() {
+        return quantidade;
+    }
 
-	public BigDecimal getValorVenda() {
-		return ValorVenda;
-	}
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
+    }
 
-	public void setValorVenda(BigDecimal valorVenda) {
-		ValorVenda = valorVenda;
-	}
-	
-	
+    public Double getValorVenda() {
+        return valorVenda;
+    }
+
+    public void setValorVenda(Double valorVenda) {
+        this.valorVenda = valorVenda;
+    }
+
+    public Pedido getPedido() {
+        return id.getPedido();
+    }
+
+    public Produto getProduto() {
+        return id.getProduto();
+    }
 }

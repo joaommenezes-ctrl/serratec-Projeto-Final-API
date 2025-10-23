@@ -2,75 +2,68 @@ package org.serratec.comercio.domain;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
+import jakarta.persistence.*;
 
 @Entity
 public class Pedido {
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
-	private LocalDateTime dataPedido;
-	
-	@Enumerated(EnumType.STRING)
-	private StatusPedido statusPedido;
-	
-	@ManyToOne
-	@JoinColumn(name = "cliente_id")
-	private Cliente cliente;
-	
-	@OneToMany(mappedBy = "pedido")
-	private List<ItemPedido> itens;
 
-	public Long getId() {
-		return id;
-	}
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private LocalDateTime dataPedido;
 
-	public LocalDateTime getDataPedido() {
-		return dataPedido;
-	}
+    @Enumerated(EnumType.STRING)
+    private StatusPedido statusPedido;
 
-	public void setDataPedido(LocalDateTime dataPedido) {
-		this.dataPedido = dataPedido;
-	}
+    @ManyToOne
+    @JoinColumn(name = "cliente_id")
+    private Cliente cliente;
 
-	public StatusPedido getStatusPedido() {
-		return statusPedido;
-	}
+    @OneToMany(mappedBy = "id.pedido")
+    private List<ItemPedido> itens;
 
-	public void setStatusPedido(StatusPedido statusPedido) {
-		this.statusPedido = statusPedido;
-	}
+    public Long getId() {
+        return id;
+    }
 
-	public Cliente getCliente() {
-		return cliente;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
+    public LocalDateTime getDataPedido() {
+        return dataPedido;
+    }
 
-	public List<ItemPedido> getItens() {
-		return itens;
-	}
+    public void setDataPedido(LocalDateTime dataPedido) {
+        this.dataPedido = dataPedido;
+    }
 
-	public void setItens(List<ItemPedido> itens) {
-		this.itens = itens;
+    public StatusPedido getStatusPedido() {
+        return statusPedido;
+    }
+
+    public void setStatusPedido(StatusPedido statusPedido) {
+        this.statusPedido = statusPedido;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public List<ItemPedido> getItens() {
+        return itens;
+    }
+
+    public void setItens(List<ItemPedido> itens) {
+        this.itens = itens;
+    }
+    
+	public List<Produto> getProdutos() {
+		return itens.stream().map(item -> item.getId().getProduto()).toList();
 	}
-	
-	
-}
+} 

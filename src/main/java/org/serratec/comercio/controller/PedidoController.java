@@ -3,6 +3,7 @@ package org.serratec.comercio.controller;
 import java.util.List;
 
 import org.serratec.comercio.dto.PedidoDTO;
+import org.serratec.comercio.dto.PedidoInserirDTO;
 import org.serratec.comercio.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,7 @@ public class PedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<PedidoDTO> salvar(@RequestBody PedidoDTO dto) {
+    public ResponseEntity<PedidoDTO> salvar(@RequestBody PedidoInserirDTO dto) {
         PedidoDTO novoPedido = pedidoService.salvar(dto);
         return ResponseEntity.ok(novoPedido);
     }

@@ -3,6 +3,8 @@ package org.serratec.comercio.dto;
 import java.time.LocalDateTime;
 import java.util.List;
 
+import org.serratec.comercio.domain.Pedido;
+import org.serratec.comercio.domain.Produto;
 import org.serratec.comercio.domain.StatusPedido;
 
 public class PedidoDTO {
@@ -11,16 +13,21 @@ public class PedidoDTO {
     private LocalDateTime dataPedido;
     private StatusPedido statusPedido;
     private Long clienteId;
-    private List<Long> itensIds;
+    private List<ItemPedidoDTO> itens;
+    private List <Produto> produtos;
 
     public PedidoDTO() {}
 
-    public PedidoDTO(Long id, LocalDateTime dataPedido, StatusPedido statusPedido, Long clienteId, List<Long> itensIds) {
-        this.id = id;
-        this.dataPedido = dataPedido;
-        this.statusPedido = statusPedido;
-        this.clienteId = clienteId;
-        this.itensIds = itensIds;
+    public PedidoDTO(Pedido pedido) {
+        this.id = pedido.getId();
+        this.dataPedido = pedido.getDataPedido();
+        this.statusPedido = pedido.getStatusPedido();
+        this.clienteId = pedido.getCliente().getId();
+        this.itens = pedido.getItens()
+                .stream()
+                .map(ItemPedidoDTO::new)
+                .toList();
+        this.produtos = pedido.getProdutos();
     }
 
     public Long getId() {
@@ -55,11 +62,20 @@ public class PedidoDTO {
         this.clienteId = clienteId;
     }
 
-    public List<Long> getItensIds() {
-        return itensIds;
+    public List<ItemPedidoDTO> getItens() {
+        return itens;
     }
 
-    public void setItensIds(List<Long> itensIds) {
-        this.itensIds = itensIds;
+    public void setItens(List<ItemPedidoDTO> itens) {
+        this.itens = itens;
     }
+
+	public List<Produto> getProdutos() {
+		return produtos;
+	}
+
+	public void setProdutos(List<Produto> produtos) {
+		this.produtos = produtos;
+	}
+    
 }

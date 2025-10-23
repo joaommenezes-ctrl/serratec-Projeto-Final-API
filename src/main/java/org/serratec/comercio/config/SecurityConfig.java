@@ -48,8 +48,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/usuario", "/login").permitAll()
                         .requestMatchers(HttpMethod.GET, "/categoria/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/produtos/**").permitAll()
-                        
-                        .requestMatchers("/cupons/**").permitAll()
+
                         .requestMatchers("/clientes/**").hasRole("CLIENTE")
                         .requestMatchers("/pedidos/**").hasRole("CLIENTE")
                         .requestMatchers("/endereco/**").hasRole("CLIENTE")

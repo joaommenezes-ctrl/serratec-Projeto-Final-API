@@ -18,7 +18,8 @@ public class PedidoController {
 
     @GetMapping
     public ResponseEntity<List<PedidoDTO>> listarTodos() {
-        return ResponseEntity.ok(pedidoService.listarTodos());
+        List<PedidoDTO> pedidos = pedidoService.listarTodos();
+        return ResponseEntity.ok(pedidos);
     }
 
     @GetMapping("/{id}")
@@ -32,8 +33,8 @@ public class PedidoController {
 
     @PostMapping
     public ResponseEntity<PedidoDTO> salvar(@RequestBody PedidoInserirDTO dto) {
-        PedidoDTO novoPedido = pedidoService.salvar(dto);
-        return ResponseEntity.ok(novoPedido);
+        PedidoDTO pedidoSalvo = pedidoService.salvar(dto);
+        return ResponseEntity.ok(pedidoSalvo);
     }
 
     @DeleteMapping("/{id}")

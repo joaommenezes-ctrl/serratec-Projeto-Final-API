@@ -1,5 +1,6 @@
 package org.serratec.comercio.service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,14 +53,11 @@ public class PedidoService {
         pedido.setDataPedido(dto.getDataPedido());
         pedido.setStatusPedido(dto.getStatusPedido());
 
-     
         Cliente cliente = clienteRepository.findById(dto.getClienteId())
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
         pedido.setCliente(cliente);
 
-   
-        pedido = pedidoRepository.save(pedido);
-
+        List<ItemPedido> itens = new ArrayList<>();
 
         if (dto.getItens() != null && !dto.getItens().isEmpty()) {
             for (ItemPedidoInserirDTO itemDTO : dto.getItens()) {
@@ -74,8 +72,16 @@ public class PedidoService {
                         itemDTO.getValorVenda()
                 );
 
-                itemPedidoRepository.save(item);
+                itens.add(item);
             }
+        }
+
+        pedido.setItens(itens);
+
+        pedido = pedidoRepository.save(pedido);
+
+        for (ItemPedido item : itens) {
+            itemPedidoRepository.save(item);
         }
 
         return new PedidoDTO(pedido);

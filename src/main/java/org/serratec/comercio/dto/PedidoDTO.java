@@ -2,9 +2,9 @@ package org.serratec.comercio.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.serratec.comercio.domain.Pedido;
-import org.serratec.comercio.domain.Produto;
 import org.serratec.comercio.domain.StatusPedido;
 
 public class PedidoDTO {
@@ -14,21 +14,25 @@ public class PedidoDTO {
     private StatusPedido statusPedido;
     private Long clienteId;
     private List<ItemPedidoDTO> itens;
-    private List <Produto> produtos;
 
-    public PedidoDTO() {}
+    public PedidoDTO() {
+    }
 
     public PedidoDTO(Pedido pedido) {
         this.id = pedido.getId();
         this.dataPedido = pedido.getDataPedido();
         this.statusPedido = pedido.getStatusPedido();
         this.clienteId = pedido.getCliente().getId();
-        this.itens = pedido.getItens()
-                .stream()
-                .map(ItemPedidoDTO::new)
-                .toList();
-        this.produtos = pedido.getProdutos();
+
+        if (pedido.getItens() != null) {
+            this.itens = pedido.getItens().stream()
+                    .map(ItemPedidoDTO::new)
+                    .collect(Collectors.toList());
+        } else {
+            this.itens = List.of(); 
+        }
     }
+
 
     public Long getId() {
         return id;
@@ -69,13 +73,4 @@ public class PedidoDTO {
     public void setItens(List<ItemPedidoDTO> itens) {
         this.itens = itens;
     }
-
-	public List<Produto> getProdutos() {
-		return produtos;
-	}
-
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
-	}
-    
 }

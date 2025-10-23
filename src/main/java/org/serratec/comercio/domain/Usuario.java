@@ -1,24 +1,17 @@
 package org.serratec.comercio.domain;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonBackReference; // 👈 IMPORTANTE
+
+import jakarta.persistence.*;
 
 @Entity
 public class Usuario implements UserDetails, Serializable {
@@ -32,15 +25,15 @@ public class Usuario implements UserDetails, Serializable {
 	@Column
 	private String nome;
 
-	@Column
+	@Column(unique = true)
 	private String email;
 
 	@Column
 	private String senha;
-	
-	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	private Cliente cliente;
 
+	@OneToOne(mappedBy = "usuario", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	@JsonBackReference
+	private Cliente cliente;
 
 	public Usuario() {
 	}
@@ -84,7 +77,14 @@ public class Usuario implements UserDetails, Serializable {
 		this.senha = senha;
 	}
 
-	
+	public Cliente getCliente() {
+		return cliente;
+	}
+
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
+
 	@Override
 	public String getPassword() {
 		return senha;
@@ -95,26 +95,36 @@ public class Usuario implements UserDetails, Serializable {
 		return email;
 	}
 
-	public Cliente getCliente() {
-		return cliente;
-	}
-
-	public void setCliente(Cliente cliente) {
-		this.cliente = cliente;
-	}
-	
-
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-	    List<GrantedAuthority> authorities = new ArrayList<>();
-	    if (cliente != null && cliente.getRole() != null) {
-	        String role = cliente.getRole().toUpperCase();
-	        if (!role.startsWith("ROLE_")) {
-	            role = "ROLE_" + role;
-	        }
-	        authorities.add(new SimpleGrantedAuthority(role));
-	    }
-	    return authorities;
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		if (cliente != null && cliente.getRole() != null) {
+			String role = cliente.getRole().toUpperCase();
+			if (!role.startsWith("ROLE_")) {
+				role = "ROLE_" + role;
+			}
+			authorities.add(new SimpleGrantedAuthority(role));
+		}
+		return authorities;
 	}
 
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 }

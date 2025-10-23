@@ -30,7 +30,7 @@ Além das operações básicas de CRUD, o sistema integra serviços externos, re
 - Cada pedido pertence a um cliente  
 - Cada pedido pode conter múltiplos produtos (relação N:N)  
 - Calcular valor total, desconto e quantidade por item  
-- Alterar status do pedido (PENDENTE, PAGO, ENVIADO, CANCELADO)  
+- Alterar status do pedido (PENDENTE, PROCESSANDO, ENVIADO, ENTREGUE, CANCELADO)  
 
 ---
 

@@ -1,7 +1,11 @@
 package org.serratec.comercio.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.serratec.comercio.domain.Usuario;
 import org.serratec.comercio.dto.LoginDTO;
+import org.serratec.comercio.dto.UsuarioDTO;
 import org.serratec.comercio.repository.UsuarioRepository;
 import org.serratec.comercio.security.JwtUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +16,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/usuario")
@@ -65,6 +73,12 @@ public class UsuarioController {
 
     @GetMapping
     public ResponseEntity<?> listar() {
-        return ResponseEntity.ok(usuarioRepository.findAll());
+    	List<Usuario> usuarios = usuarioRepository.findAll();
+		List<UsuarioDTO> usuariosDTO = new ArrayList<>();
+		for (Usuario usuario : usuarios) {
+			usuariosDTO.add(new UsuarioDTO(usuario));
+		}
+		return ResponseEntity.ok(usuariosDTO);
+        
     }
 }

@@ -80,9 +80,6 @@ public class PedidoService {
 
         pedido = pedidoRepository.save(pedido);
 
-        for (ItemPedido item : itens) {
-            itemPedidoRepository.save(item);
-        }
 
         return new PedidoDTO(pedido);
     }

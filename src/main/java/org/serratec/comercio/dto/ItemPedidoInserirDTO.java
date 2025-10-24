@@ -4,10 +4,10 @@ public class ItemPedidoInserirDTO {
 	private Long produtoId;
 	private Integer quantidade;
 	private Double valorVenda;
-	
-	
-	public ItemPedidoInserirDTO() {}
-	
+
+	public ItemPedidoInserirDTO() {
+	}
+
 	public ItemPedidoInserirDTO(Long produtoId, Integer quantidade, Double valorVenda) {
 		this.produtoId = produtoId;
 		this.quantidade = quantidade;

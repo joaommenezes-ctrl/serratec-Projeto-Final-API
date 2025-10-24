@@ -1,15 +1,11 @@
 package org.serratec.comercio.dto;
 
-
-
-import org.serratec.comercio.domain.ItemPedido; 
+import org.serratec.comercio.domain.ItemPedido;
 
 public class ItemPedidoDTO {
 	private Long id;
 	private Integer quantidade;
 	private Double ValorVenda;
-	
-	
 
 	public ItemPedidoDTO() {
 	}
@@ -26,8 +22,6 @@ public class ItemPedidoDTO {
 		this.ValorVenda = itemPedido.getValorVenda();
 	}
 
-	
-	
 	public Long getId() {
 		return id;
 	}
@@ -35,7 +29,6 @@ public class ItemPedidoDTO {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
 
 	public Integer getQuantidade() {
 		return quantidade;
@@ -53,5 +46,4 @@ public class ItemPedidoDTO {
 		ValorVenda = valorVenda;
 	}
 
-	
 }

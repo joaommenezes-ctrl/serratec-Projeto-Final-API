@@ -33,7 +33,6 @@ public class ClienteService {
         cliente.setNome(dto.getNome());
         cliente.setCpf(dto.getCpf());
         cliente.setTelefone(dto.getTelefone());
-        cliente.setEmail(dto.getEmail());
         Cliente salvo = clienteRepository.save(cliente);
         return new ClienteDTO(salvo);
     }
@@ -44,7 +43,6 @@ public class ClienteService {
         cliente.setNome(dto.getNome());
         cliente.setCpf(dto.getCpf());
         cliente.setTelefone(dto.getTelefone());
-        cliente.setEmail(dto.getEmail());
         Cliente atualizado = clienteRepository.save(cliente);
         return new ClienteDTO(atualizado);
     }

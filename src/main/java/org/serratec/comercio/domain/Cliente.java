@@ -1,5 +1,7 @@
 package org.serratec.comercio.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,6 +37,7 @@ public class Cliente {
 	
 	@OneToOne(cascade= CascadeType.ALL)
 	@JoinColumn(name = "usuario_id", referencedColumnName = "id")
+	@JsonBackReference
 	private Usuario usuario;
 	
 	private String role;

@@ -3,6 +3,7 @@ package org.serratec.comercio.controller;
 import java.util.List;
 
 import org.serratec.comercio.dto.PedidoDTO;
+import org.serratec.comercio.dto.PedidoInserirDTO;
 import org.serratec.comercio.service.PedidoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,8 @@ public class PedidoController {
 
     @GetMapping
     public ResponseEntity<List<PedidoDTO>> listarTodos() {
-        return ResponseEntity.ok(pedidoService.listarTodos());
+        List<PedidoDTO> pedidos = pedidoService.listarTodos();
+        return ResponseEntity.ok(pedidos);
     }
 
     @GetMapping("/{id}")
@@ -30,9 +32,9 @@ public class PedidoController {
     }
 
     @PostMapping
-    public ResponseEntity<PedidoDTO> salvar(@RequestBody PedidoDTO dto) {
-        PedidoDTO novoPedido = pedidoService.salvar(dto);
-        return ResponseEntity.ok(novoPedido);
+    public ResponseEntity<PedidoDTO> salvar(@RequestBody PedidoInserirDTO dto) {
+        PedidoDTO pedidoSalvo = pedidoService.salvar(dto);
+        return ResponseEntity.ok(pedidoSalvo);
     }
 
     @DeleteMapping("/{id}")

@@ -2,7 +2,6 @@ package org.serratec.comercio.service;
 
 import org.serratec.comercio.domain.Categoria;
 import org.serratec.comercio.dto.CategoriaDTO;
-import org.serratec.comercio.dto.ProdutoDTO;
 import org.serratec.comercio.repository.CategoriaRepository;
 import org.springframework.stereotype.Service;
 

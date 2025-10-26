@@ -33,6 +33,7 @@ public class ClienteService {
         cliente.setNome(dto.getNome());
         cliente.setCpf(dto.getCpf());
         cliente.setTelefone(dto.getTelefone());
+        cliente.setRole("CLIENTE");
         Cliente salvo = clienteRepository.save(cliente);
         return new ClienteDTO(salvo);
     }

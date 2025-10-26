@@ -50,6 +50,7 @@ public class SecurityConfig {
 
                         .requestMatchers("/clientes/**").hasRole("CLIENTE")
                         .requestMatchers("/pedidos/**").hasRole("CLIENTE")
+                        .requestMatchers("/devolucoes/**").hasRole("CLIENTE")
                         .requestMatchers("/endereco/**").hasRole("CLIENTE")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())

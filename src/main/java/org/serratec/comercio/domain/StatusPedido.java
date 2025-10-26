@@ -1,5 +1,5 @@
 package org.serratec.comercio.domain;
 
 public enum StatusPedido {
-	PENDENTE, PROCESSANDO, ENVIADO, ENTREGUE, CANCELADO
+	PENDENTE, PROCESSANDO, ENVIADO, ENTREGUE, CANCELADO, DEVOLVIDO
 }

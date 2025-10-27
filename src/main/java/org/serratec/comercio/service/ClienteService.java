@@ -1,18 +1,24 @@
 package org.serratec.comercio.service;
 
 import org.serratec.comercio.domain.Cliente;
+import org.serratec.comercio.domain.Usuario;
 import org.serratec.comercio.dto.ClienteDTO;
 import org.serratec.comercio.repository.ClienteRepository;
+import org.serratec.comercio.repository.UsuarioRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
 public class ClienteService {
-    private ClienteRepository clienteRepository;
 
-    public ClienteService(ClienteRepository clienteRepository) {
+    private final ClienteRepository clienteRepository;
+    private final UsuarioRepository usuarioRepository;
+
+    public ClienteService(ClienteRepository clienteRepository, UsuarioRepository usuarioRepository) {
         this.clienteRepository = clienteRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     public List<ClienteDTO> listar() {
@@ -34,6 +40,13 @@ public class ClienteService {
         cliente.setCpf(dto.getCpf());
         cliente.setTelefone(dto.getTelefone());
         cliente.setRole("CLIENTE");
+
+        if (dto.getIdusuario() != null) {
+            Usuario usuario = usuarioRepository.findById(dto.getIdusuario())
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + dto.getIdusuario()));
+            cliente.setUsuario(usuario);
+        }
+
         Cliente salvo = clienteRepository.save(cliente);
         return new ClienteDTO(salvo);
     }
@@ -44,6 +57,13 @@ public class ClienteService {
         cliente.setNome(dto.getNome());
         cliente.setCpf(dto.getCpf());
         cliente.setTelefone(dto.getTelefone());
+
+        if (dto.getIdusuario() != null) {
+            Usuario usuario = usuarioRepository.findById(dto.getIdusuario())
+                    .orElseThrow(() -> new RuntimeException("Usuário não encontrado com ID: " + dto.getIdusuario()));
+            cliente.setUsuario(usuario);
+        }
+
         Cliente atualizado = clienteRepository.save(cliente);
         return new ClienteDTO(atualizado);
     }

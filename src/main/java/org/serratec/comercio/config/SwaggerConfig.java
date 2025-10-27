@@ -29,4 +29,5 @@ public class SwaggerConfig {
                         .description("Documentação completa no GitHub")
                         .url("https://github.com/joaommenezes-ctrl/serratec-Projeto-Final-API"));
     }
+    //http://localhost:8080/swagger-ui/index.html#/
 }

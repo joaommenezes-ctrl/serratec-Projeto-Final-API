@@ -6,6 +6,8 @@ import java.util.stream.Collectors;
 import org.serratec.comercio.domain.Cartao;
 import org.serratec.comercio.domain.Usuario;
 import org.serratec.comercio.dto.CartaoDTO;
+import org.serratec.comercio.exception.ClienteNaoAutorizadoException;
+import org.serratec.comercio.exception.RecursoNaoEncontradoException;
 import org.serratec.comercio.repository.CartaoRepository;
 import org.serratec.comercio.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,11 +33,11 @@ public class CartaoService {
         // Lista apenas os cartões associados ao cliente associado
         String usuario_autenticado_email = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario usuario_autenticado = usuarioRepository.findByEmail(usuario_autenticado_email)
-                .orElseThrow(() -> new RuntimeException("Cliente autenticado não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente autenticado não encontrado"));
         Long clienteId = usuario_autenticado.getCliente().getId();
         return this.cartaoRepository.findByClienteId(clienteId)
                 .orElseThrow(
-                        () -> new RuntimeException("Não foi encontrado nnenhum cartão para o cliente autenticado!"))
+                        () -> new RecursoNaoEncontradoException("Não foi encontrado nnenhum cartão para o cliente autenticado!"))
                 .stream()
                 .map(CartaoDTO::new)
                 .collect(Collectors.toList());
@@ -45,11 +47,11 @@ public class CartaoService {
         // Verifica se o cartão a ser buscado é do cliente autenticado
         String usuario_autenticado_email = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario usuario_autenticado = usuarioRepository.findByEmail(usuario_autenticado_email)
-                .orElseThrow(() -> new RuntimeException("Cliente autenticado não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente autenticado não encontrado"));
         Cartao cartao = this.cartaoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cartão não encontrado"));
         if (!cartao.getCliente().getId().equals(usuario_autenticado.getCliente().getId())) {
-            throw new RuntimeException("Você não tem permissão para acessar esse recurso.");
+            throw new ClienteNaoAutorizadoException("Você não tem permissão para acessar esse recurso.");
         }
         return new CartaoDTO(cartao);
     }
@@ -57,7 +59,7 @@ public class CartaoService {
     public CartaoDTO salvar(CartaoDTO cartaoDTO) {
         String usuario_autenticado_email = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario usuario_autenticado = usuarioRepository.findByEmail(usuario_autenticado_email)
-                .orElseThrow(() -> new RuntimeException("Cliente autenticado não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente autenticado não encontrado"));
 
         Cartao cartao = new Cartao();
         cartao.setApelido(cartaoDTO.getApelido());
@@ -75,13 +77,13 @@ public class CartaoService {
 
     public CartaoDTO atualizar(Long id, CartaoDTO cartaoDTO) {
         Cartao cartao = this.cartaoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cartão não encontrado"));
         // Verifica se o cartão a ser atualizado é do cliente autenticado
         String usuario_autenticado_email = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario usuario_autenticado = usuarioRepository.findByEmail(usuario_autenticado_email)
-                .orElseThrow(() -> new RuntimeException("Cliente autenticado não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente autenticado não encontrado"));
         if (!cartao.getCliente().getId().equals(usuario_autenticado.getCliente().getId())) {
-            throw new RuntimeException("Você não tem permissão para acessar esse recurso.");
+            throw new ClienteNaoAutorizadoException("Você não tem permissão para acessar esse recurso.");
         }
         cartao.setApelido(cartaoDTO.getApelido());
         cartao.setBandeira(cartaoDTO.getBandeira());
@@ -97,13 +99,13 @@ public class CartaoService {
 
     public void deletar(Long id) {
         Cartao cartao = cartaoRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cartão não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cartão não encontrado"));
         // Verifica se o cartão a ser deletado é do cliente autenticado
         String usuario_autenticado_email = SecurityContextHolder.getContext().getAuthentication().getName();
         Usuario usuario_autenticado = usuarioRepository.findByEmail(usuario_autenticado_email)
-                .orElseThrow(() -> new RuntimeException("Cliente autenticado não encontrado"));
+                .orElseThrow(() -> new RecursoNaoEncontradoException("Cliente autenticado não encontrado"));
         if (!cartao.getCliente().getId().equals(usuario_autenticado.getCliente().getId())) {
-            throw new RuntimeException("Você não tem permissão para acessar esse recurso.");
+            throw new ClienteNaoAutorizadoException("Você não tem permissão para acessar esse recurso.");
         }
 
         this.cartaoRepository.deleteById(id);

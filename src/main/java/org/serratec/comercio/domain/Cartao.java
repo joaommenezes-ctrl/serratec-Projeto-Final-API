@@ -7,6 +7,8 @@ import jakarta.validation.constraints.Size;
 
 import java.time.YearMonth;
 
+import org.serratec.comercio.converter.YearMonthConverter;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
@@ -27,6 +29,7 @@ public class Cartao {
     private String nomeImpresso;
     @Min(value = 3, message = "O codigo de verificação deve conter no mínimo 3 dígitos.")
     private short cvv;
+    @Convert(converter = YearMonthConverter.class)
     private YearMonth validade;
 
     @ManyToOne

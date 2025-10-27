@@ -1,6 +1,5 @@
 package org.serratec.comercio.controller;
 
-
 import java.util.List;
 
 import org.serratec.comercio.dto.CartaoDTO;
@@ -16,18 +15,19 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
 @RestController
 @RequestMapping("/cartoes")
 public class CartaoController {
 
     @Autowired
     private CartaoService cartaoService;
-    
-    /* @GetMapping
-    public ResponseEntity<List<CartaoDTO>> listarTodos() {
-        return ResponseEntity.ok(cartaoService.listarTodos());
-    } */
+
+    /*
+     * @GetMapping
+     * public ResponseEntity<List<CartaoDTO>> listarTodos() {
+     * return ResponseEntity.ok(cartaoService.listarTodos());
+     * }
+     */
 
     @GetMapping
     public ResponseEntity<List<CartaoDTO>> buscarPorClienteAutenticado() {
@@ -42,11 +42,12 @@ public class CartaoController {
     @PostMapping
     public ResponseEntity<CartaoDTO> salvar(@RequestBody CartaoDTO cartaoDTO) {
         return ResponseEntity.ok(cartaoService.salvar(cartaoDTO));
+        
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<CartaoDTO> atualizar(@PathVariable Long id, @RequestBody CartaoDTO cartaoDTO) {
-        return ResponseEntity.ok(cartaoService.atualizar(id, cartaoDTO));
+        return ResponseEntity.ok(cartaoService.salvar(cartaoDTO));
     }
 
     @DeleteMapping("/{id}")

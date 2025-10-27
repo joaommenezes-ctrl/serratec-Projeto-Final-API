@@ -1,38 +1,75 @@
 ├── domain              ← suas entidades JPA (tabelas)
+    |-- Avaliacao.java
+    |-- Bandeira.java
+    |-- Cartao.java
 │   ├── Categoria.java
+    |-- Cliente.java
+    |-- Cupom.java
+    |-- Endereco.java
+    |-- ItemPedido.java
+    |-- ItemPedidoPK.java
+    |-- Modalidade.java
+    |-- Pedido.java
 │   ├── Produto.java
-│   ├── Cliente.java
-│   ├── Pedido.java
-│   └── ItemPedido.java
+│   ├-- StatusProduto.java
+    |-- Usuario.java
 │
 ├── repository           ← interfaces que estendem JpaRepository
+    |-- AvaliacaoRepository.java
+    |-- CartaoRepository.java
 │   ├── CategoriaRepository.java
-│   ├── ProdutoRepository.java
 │   ├── ClienteRepository.java
+    |-- CupomRepository.java
+    |-- EnderecoRepository.java
+│   |-- ItemPedidoRepository.java
 │   ├── PedidoRepository.java
-│   └── ItemPedidoRepository.java
+    ├── ProdutoRepository.java
+    |-- UsuarioRepository.java
 │
 ├── service              ← regras de negócio
-│   ├── CategoriaService.java
+    |-- AvaliacaoService.java
+    |-- CartaoService.java
+    |-- CategoriaService.java
+    |-- ClienteService.java
+    |-- CupomService.java
+    |-- DevolucaoService.java
+    |-- EnderecoService.java
+    |-- PedidoService.java
 │   ├── ProdutoService.java
-│   ├── ClienteService.java
-│   ├── PedidoService.java
-│   └── EmailService.java
+    |-- UserDetailsServiceImpl.java
 │
 ├── controller           ← endpoints REST
+    |-- AvaliacaoController.java
+    |-- CartaoController.java
 │   ├── CategoriaController.java
+    |-- ClienteController.java
+    |-- CupomController.java
+    |-- DevolucaoController.java
+    |-- EnderecoController.java
+    |-- PedidoController.java
 │   ├── ProdutoController.java
-│   ├── ClienteController.java
-│   └── PedidoController.java
+    |-- UsuarioController.java
 │
 ├── dto                  ← objetos de transferência (DTOs)
+    |-- AvaliacaoDTO.java
+    |-- CartaoDTO.java
 │   ├── CategoriaDTO.java
+    ├── ClienteDTO.java
+    |-- DevolucaoPedidoDTO.java
+    |-- EnderecoDTO.java
+    |-- ItemPedidoDTO.java
+    |-- ItemPedidoInserirDTO.java
+    |-- LoginDTO.java
+│   |── PedidoDTO.java
+    |-- PedidoInserirDTO.java
 │   ├── ProdutoDTO.java
-│   ├── ClienteDTO.java
-│   └── PedidoDTO.java
+    |-- UsuarioDTO.java
+│   
 │
 ├── exception            ← tratamento de erros
-│   ├── GlobalExceptionHandler.java
-│   ├── ClienteNotFoundException.java
-│   └── ProdutoNotFoundException.java
+│   ├── ControllerExceptionHandler.java
+    |-- EmailException.java
+    |-- ErroResposta.java
+    |-- PedidoNotFoundException.java
+│   ├── SenhaException.java
 │

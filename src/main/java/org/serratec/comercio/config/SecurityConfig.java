@@ -52,6 +52,7 @@ public class SecurityConfig {
                         .requestMatchers("/pedidos/**").hasRole("CLIENTE")
                         .requestMatchers("/devolucoes/**").hasRole("CLIENTE")
                         .requestMatchers("/endereco/**").hasRole("CLIENTE")
+                        .requestMatchers("/cartoes/**").hasRole("CLIENTE")
                         .anyRequest().authenticated())
                 .httpBasic(Customizer.withDefaults())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

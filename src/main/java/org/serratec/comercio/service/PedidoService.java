@@ -14,7 +14,6 @@ import org.serratec.comercio.dto.PedidoInserirDTO;
 import org.serratec.comercio.dto.ItemPedidoInserirDTO;
 import org.serratec.comercio.repository.PedidoRepository;
 import org.serratec.comercio.repository.ClienteRepository;
-import org.serratec.comercio.repository.ItemPedidoRepository;
 import org.serratec.comercio.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,9 +27,6 @@ public class PedidoService {
 
     @Autowired
     private ClienteRepository clienteRepository;
-
-    @Autowired
-    private ItemPedidoRepository itemPedidoRepository;
 
     @Autowired
     private ProdutoRepository produtoRepository;

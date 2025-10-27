@@ -7,20 +7,22 @@ public enum Bandeira {
     ELO(4, "Elo"),
     DINERS(5, "Diners");
 
-    private final int codigo;
-    private final String nome;
+    private final int id;
+    private final String nome_bandeira;
 
-    Bandeira(int codigo, String nome) {
-        this.codigo = codigo;
-        this.nome = nome;
+    
+
+    Bandeira(int id, String nome_bandeira) {
+        this.id = id;
+        this.nome_bandeira = nome_bandeira;
     }
 
-    public int getCodigo() {
-        return codigo;
+    public int getId() {
+        return id;
     }
 
-    public String getNome() {
-        return nome;
+    public String getNome_bandeira() {
+        return nome_bandeira;
     }
 
 }

@@ -30,11 +30,16 @@ public class CartaoController {
     } */
 
     @GetMapping
-    public ResponseEntity<List<CartaoDTO>> buscarPorClienteAutenticado(@PathVariable Long id) {
+    public ResponseEntity<List<CartaoDTO>> buscarPorClienteAutenticado() {
         return ResponseEntity.ok(cartaoService.listarPorClienteAutenticado());
     }
 
-    @PostMapping("/{id}")
+    @GetMapping("/{id}")
+    public ResponseEntity<CartaoDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(cartaoService.buscarPorId(id));
+    }
+
+    @PostMapping
     public ResponseEntity<CartaoDTO> salvar(@RequestBody CartaoDTO cartaoDTO) {
         return ResponseEntity.ok(cartaoService.salvar(cartaoDTO));
     }

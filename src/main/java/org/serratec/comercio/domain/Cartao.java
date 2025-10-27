@@ -1,6 +1,7 @@
 package org.serratec.comercio.domain;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
@@ -16,18 +17,16 @@ public class Cartao {
     @NotBlank(message = "É obrigatório informar um apelido para o cartão.")
     private String apelido;
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "É obrigatório informar a bandeira do cartão.")
     private Bandeira bandeira;
     @Enumerated(EnumType.STRING)
-    @NotBlank(message = "É obrigatório informar a modalidade do cartão.")
     private Modalidade modalidade;
+    @NotBlank(message = "É obrigatório informar o número do cartão.")
     @Size(min = 16, max = 16, message = "O número do cartão deve conter 16 dígitos, e deve ser informado sem espaços")
     private String numero;
     @NotBlank(message = "É obrigatório informar o nome impresso no cartão.")
     private String nomeImpresso;
-    @Size(min = 3, max = 4, message = "O CVV deve conter 3 ou 4 dígitos.")
+    @Min(value = 3, message = "O codigo de verificação deve conter no mínimo 3 dígitos.")
     private short cvv;
-    @NotBlank(message = "É obrigatório informar a validade do cartão.")
     private YearMonth validade;
 
     @ManyToOne

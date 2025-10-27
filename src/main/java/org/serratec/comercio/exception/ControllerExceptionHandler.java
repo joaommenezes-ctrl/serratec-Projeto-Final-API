@@ -16,28 +16,27 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import io.micrometer.common.lang.NonNull;
 
-
 @ControllerAdvice
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler({EmailException.class, SenhaException.class})
+	@ExceptionHandler({ EmailException.class, SenhaException.class })
 	protected ResponseEntity<Object> handleBusinessException(RuntimeException ex) {
 		return ResponseEntity.unprocessableEntity().body(ex.getMessage());
 	}
 
 	@Override
-	protected ResponseEntity<Object> handleMethodArgumentNotValid(@NonNull MethodArgumentNotValidException ex,
-			@NonNull HttpHeaders headers, @NonNull HttpStatusCode status, @NonNull WebRequest request) {
-		
+	protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex,
+			HttpHeaders headers, HttpStatusCode status, WebRequest request) {
+
 		List<String> erros = new ArrayList<>();
-		for(FieldError er: ex.getBindingResult().getFieldErrors()) {
+		for (FieldError er : ex.getBindingResult().getFieldErrors()) {
 			String errorMessage = er.getField() + ": " + er.getDefaultMessage();
 			erros.add(errorMessage);
 		}
-		
-		ErroResposta erroResposta = new ErroResposta(status.value(), 
+
+		ErroResposta erroResposta = new ErroResposta(status.value(),
 				"Contém Campos que estão com erros. Confira por favor!", LocalDateTime.now(), erros);
-		
+
 		return super.handleExceptionInternal(ex, erroResposta, headers, status, request);
 	}
 }

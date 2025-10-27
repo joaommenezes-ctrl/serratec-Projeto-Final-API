@@ -14,6 +14,7 @@ public class PedidoDTO {
     private StatusPedido statusPedido;
     private Long clienteId;
     private List<ItemPedidoDTO> itens;
+    private double valorTotal = 0;
 
     public PedidoDTO() {
     }
@@ -72,5 +73,12 @@ public class PedidoDTO {
 
     public void setItens(List<ItemPedidoDTO> itens) {
         this.itens = itens;
+    }
+
+    public double getValorTotal() {
+        for(ItemPedidoDTO item: this.itens){
+            valorTotal += item.getValorVenda() * item.getQuantidade();
+        }
+        return valorTotal;
     }
 }

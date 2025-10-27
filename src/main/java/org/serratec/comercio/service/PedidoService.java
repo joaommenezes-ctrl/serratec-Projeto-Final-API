@@ -59,18 +59,17 @@ public class PedidoService {
 
         if (dto.getItens() != null && !dto.getItens().isEmpty()) {
             for (ItemPedidoInserirDTO itemDTO : dto.getItens()) {
-
                 Produto produto = produtoRepository.findById(itemDTO.getProdutoId())
                         .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + itemDTO.getProdutoId()));
-
+                
                 ItemPedido item = new ItemPedido(
                         pedido,
                         produto,
                         itemDTO.getQuantidade(),
                         itemDTO.getValorVenda()
                 );
-
                 itens.add(item);
+                
             }
         }
 		try {
@@ -79,8 +78,7 @@ public class PedidoService {
 			throw new InvalidFieldException("Erro ao adicionar itens ao pedido: " + "Verifique os campos");
 		}
 
-        pedido.setItens(itens);
-
+    
         pedido = pedidoRepository.save(pedido);
 
 

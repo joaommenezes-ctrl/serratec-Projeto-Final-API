@@ -22,7 +22,7 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+
     @NotNull
     private LocalDateTime dataPedido;
 
@@ -35,7 +35,6 @@ public class Pedido {
 
     @OneToMany(mappedBy = "id.pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens = new ArrayList<>();
-
 
     public Long getId() {
         return id;
@@ -76,8 +75,8 @@ public class Pedido {
     public void setItens(List<ItemPedido> itens) {
         this.itens = itens;
     }
-    
-	public List<Produto> getProdutos() {
-		return itens.stream().map(item -> item.getId().getProduto()).toList();
-	}
-} 
+
+    public List<Produto> getProdutos() {
+        return itens.stream().map(item -> item.getId().getProduto()).toList();
+    }
+}

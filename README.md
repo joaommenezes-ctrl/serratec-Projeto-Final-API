@@ -96,10 +96,10 @@ A funcionalidade utiliza o `Spring Boot Starter Mail` com servidor SMTP configur
 | Nome |
 |------|
 | **João Menezes** |
-| **Willian José** |
+| **Willian Lippi** |
 | **José Arthur** |
-| **Nicole** |
-| **Nélio** |
+| **Nicole Parisi** |
+| **Nélio Ramos** |
 | **Gabriel Belinski** |
 ---
 

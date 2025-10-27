@@ -9,7 +9,15 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 @ControllerAdvice
+
 public class ControllerExceptionHandler extends ResponseEntityExceptionHandler {
+	
+    @ExceptionHandler({InvalidFieldException.class})
+	protected ResponseEntity<Object> handleInvalidFieldException(InvalidFieldException ex) {
+		ErroResposta erroResposta = new ErroResposta(HttpStatusCode.valueOf(400).value(), ex.getMessage(),
+				LocalDateTime.now());
+		return ResponseEntity.badRequest().body(erroResposta);
+	}
 
 	@ExceptionHandler({ EmailException.class, SenhaException.class })
 	protected ResponseEntity<Object> handleBusinessException(RuntimeException ex) {

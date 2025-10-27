@@ -8,21 +8,22 @@ import jakarta.persistence.Id;
 @Entity
 public class Fornecedor {
 	@Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String nome;
-    private String cnpj;
-    private String email;
+	private String nome;
+	private String cnpj;
+	private String email;
 
-    public Fornecedor() {}
+	public Fornecedor() {
+	}
 
-    public Fornecedor(Long id, String nome, String cnpj, String email) {
-        this.id = id;
-        this.nome = nome;
-        this.cnpj = cnpj;
-        this.email = email;
-    }
+	public Fornecedor(Long id, String nome, String cnpj, String email) {
+		this.id = id;
+		this.nome = nome;
+		this.cnpj = cnpj;
+		this.email = email;
+	}
 
 	public Long getId() {
 		return id;
@@ -55,6 +56,5 @@ public class Fornecedor {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-    
 
 }

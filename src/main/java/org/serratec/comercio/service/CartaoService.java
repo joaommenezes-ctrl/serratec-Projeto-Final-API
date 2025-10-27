@@ -37,7 +37,7 @@ public class CartaoService {
         Long clienteId = usuario_autenticado.getCliente().getId();
         return this.cartaoRepository.findByClienteId(clienteId)
                 .orElseThrow(
-                        () -> new RecursoNaoEncontradoException("Não foi encontrado nnenhum cartão para o cliente autenticado!"))
+                        () -> new RecursoNaoEncontradoException("Não foi encontrado nenhum cartão para o cliente autenticado!"))
                 .stream()
                 .map(CartaoDTO::new)
                 .collect(Collectors.toList());

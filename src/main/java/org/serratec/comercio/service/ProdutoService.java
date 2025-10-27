@@ -1,12 +1,13 @@
 package org.serratec.comercio.service;
 
-import org.serratec.comercio.domain.Produto;
-import org.serratec.comercio.dto.ProdutoDTO;
-import org.serratec.comercio.repository.ProdutoRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.serratec.comercio.domain.Produto;
+import org.serratec.comercio.dto.ProdutoDTO;
+import org.serratec.comercio.exception.InvalidFieldException;
+import org.serratec.comercio.repository.ProdutoRepository;
+import org.springframework.stereotype.Service;
 
 @Service
 public class ProdutoService {
@@ -32,12 +33,18 @@ public class ProdutoService {
         return new ProdutoDTO(produto);
     }
 
-    public ProdutoDTO salvar(ProdutoDTO dto) {
+    public ProdutoDTO salvar(ProdutoDTO dto) throws InvalidFieldException {
         Produto produto = new Produto();
         produto.setNome(dto.getNome());
         produto.setDescricao(dto.getDescricao());
         produto.setPreco(dto.getPreco());
-        Produto salvo = produtoRepository.save(produto);
+        Produto salvo;
+        try {
+        	salvo = produtoRepository.save(produto);
+		} catch (RuntimeException e) {
+			throw new InvalidFieldException("Erro ao salvar produto, " + "Verifique os campos obrigatórios.");
+		}
+        salvo = produtoRepository.save(produto);
         return new ProdutoDTO(salvo);
     }
 

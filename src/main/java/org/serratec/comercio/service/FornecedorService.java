@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class FornecedorService {
+	
 	@Autowired
     private FornecedorRepository repository;
 

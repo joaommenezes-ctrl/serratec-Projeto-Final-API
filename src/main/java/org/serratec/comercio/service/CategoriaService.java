@@ -1,12 +1,13 @@
 package org.serratec.comercio.service;
 
-import org.serratec.comercio.domain.Categoria;
-import org.serratec.comercio.dto.CategoriaDTO;
-import org.serratec.comercio.repository.CategoriaRepository;
-import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.stream.Collectors;
+
+import org.serratec.comercio.domain.Categoria;
+import org.serratec.comercio.dto.CategoriaDTO;
+import org.serratec.comercio.exception.InvalidFieldException;
+import org.serratec.comercio.repository.CategoriaRepository;
+import org.springframework.stereotype.Service;
 
 @Service
 public class CategoriaService {
@@ -29,9 +30,14 @@ public class CategoriaService {
         return new CategoriaDTO(categoria);
     }
 
-    public CategoriaDTO salvar(CategoriaDTO dto) {
+    public CategoriaDTO salvar(CategoriaDTO dto) throws InvalidFieldException {
         Categoria categoria = new Categoria();
         categoria.setNome(dto.getNome());
+		try {
+			categoriaRepository.save(categoria);
+		} catch (RuntimeException e) {
+			throw new InvalidFieldException("Erro ao salvar a categoria, " + "Não pode ser nulo ou vazio");
+		}
         Categoria salvo = categoriaRepository.save(categoria);
         return new CategoriaDTO(salvo);
     }

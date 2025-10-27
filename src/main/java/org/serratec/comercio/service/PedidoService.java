@@ -5,15 +5,16 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.serratec.comercio.domain.Pedido;
 import org.serratec.comercio.domain.Cliente;
 import org.serratec.comercio.domain.ItemPedido;
+import org.serratec.comercio.domain.Pedido;
 import org.serratec.comercio.domain.Produto;
+import org.serratec.comercio.dto.ItemPedidoInserirDTO;
 import org.serratec.comercio.dto.PedidoDTO;
 import org.serratec.comercio.dto.PedidoInserirDTO;
-import org.serratec.comercio.dto.ItemPedidoInserirDTO;
-import org.serratec.comercio.repository.PedidoRepository;
+import org.serratec.comercio.exception.InvalidFieldException;
 import org.serratec.comercio.repository.ClienteRepository;
+import org.serratec.comercio.repository.PedidoRepository;
 import org.serratec.comercio.repository.ProdutoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -44,10 +45,11 @@ public class PedidoService {
     }
 
     @Transactional
-    public PedidoDTO salvar(PedidoInserirDTO dto) {
+    public PedidoDTO salvar(PedidoInserirDTO dto)  throws InvalidFieldException {
         Pedido pedido = new Pedido();
         pedido.setDataPedido(dto.getDataPedido());
         pedido.setStatusPedido(dto.getStatusPedido());
+        
 
         Cliente cliente = clienteRepository.findById(dto.getClienteId())
                 .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
@@ -71,6 +73,11 @@ public class PedidoService {
                 itens.add(item);
             }
         }
+		try {
+			pedido.setItens(itens);
+		} catch (RuntimeException e) {
+			throw new InvalidFieldException("Erro ao adicionar itens ao pedido: " + "Verifique os campos");
+		}
 
         pedido.setItens(itens);
 

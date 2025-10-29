@@ -19,7 +19,7 @@ public class DevolucaoService {
     @Autowired
     private PedidoRepository pedidoRepository;
 
-    public Pedido processarDevolucao(DevolucaoPedidoDTO devolucaoDTO) {
+    public PedidoDTO processarDevolucao(DevolucaoPedidoDTO devolucaoDTO) {
         Usuario usuarioLogado = (Usuario) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         
         Pedido pedido = pedidoRepository.findById(devolucaoDTO.getPedidoId())
@@ -34,7 +34,8 @@ public class DevolucaoService {
         }
 
         pedido.setStatusPedido(StatusPedido.DEVOLVIDO);
-        return pedidoRepository.save(pedido);
+        pedido = pedidoRepository.save(pedido);
+		return new PedidoDTO(pedido);
     }
 
     public List<PedidoDTO> listarDevolucoes() {

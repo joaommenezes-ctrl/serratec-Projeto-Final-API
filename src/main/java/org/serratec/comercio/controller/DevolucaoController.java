@@ -24,8 +24,8 @@ public class DevolucaoController {
     private DevolucaoService devolucaoService;
 
     @PostMapping
-    public ResponseEntity<Pedido> processarDevolucao(@Valid @RequestBody DevolucaoPedidoDTO devolucaoDTO) {
-        Pedido pedidoDevolvido = devolucaoService.processarDevolucao(devolucaoDTO);
+    public ResponseEntity<PedidoDTO> processarDevolucao(@Valid @RequestBody DevolucaoPedidoDTO devolucaoDTO) {
+        PedidoDTO pedidoDevolvido = devolucaoService.processarDevolucao(devolucaoDTO);
         return ResponseEntity.ok(pedidoDevolvido);
     }
 

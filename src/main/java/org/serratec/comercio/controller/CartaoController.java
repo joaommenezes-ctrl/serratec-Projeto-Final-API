@@ -47,7 +47,7 @@ public class CartaoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CartaoDTO> atualizar(@PathVariable Long id, @RequestBody CartaoDTO cartaoDTO) {
-        return ResponseEntity.ok(cartaoService.salvar(cartaoDTO));
+        return ResponseEntity.ok(cartaoService.atualizar(id, cartaoDTO));
     }
 
     @DeleteMapping("/{id}")

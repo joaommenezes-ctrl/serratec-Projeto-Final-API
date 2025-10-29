@@ -4,26 +4,38 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.serratec.comercio.domain.Cliente;
+import org.serratec.comercio.domain.Endereco;
 import org.serratec.comercio.domain.Usuario;
 import org.serratec.comercio.dto.ClienteDTO;
+import org.serratec.comercio.dto.ClienteInserirDTO;
 import org.serratec.comercio.exception.InvalidFieldException;
 import org.serratec.comercio.repository.ClienteRepository;
 import org.serratec.comercio.repository.UsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ClienteService {
-
+	
+	@Autowired
 	private final ClienteRepository clienteRepository;
+	
+	@Autowired
 	private final UsuarioRepository usuarioRepository;
-
+	
+	@Autowired
+	private EnderecoService enderecoService;
+	
 	public ClienteService(ClienteRepository clienteRepository, UsuarioRepository usuarioRepository) {
 		this.clienteRepository = clienteRepository;
 		this.usuarioRepository = usuarioRepository;
 	}
 
 	public List<ClienteDTO> listar() {
-		return clienteRepository.findAll().stream().map(ClienteDTO::new).collect(Collectors.toList());
+		return clienteRepository.findAll()
+				.stream()
+				.map(ClienteDTO::new)
+				.collect(Collectors.toList());
 	}
 
 	public ClienteDTO buscar(Long id) {
@@ -32,11 +44,14 @@ public class ClienteService {
 		return new ClienteDTO(cliente);
 	}
 
-	public ClienteDTO salvar(ClienteDTO dto) throws InvalidFieldException {
+	public ClienteDTO salvar(ClienteInserirDTO dto) throws InvalidFieldException {
 		Cliente cliente = new Cliente();
 		cliente.setNome(dto.getNome());
 		cliente.setCpf(dto.getCpf());
 		cliente.setTelefone(dto.getTelefone());
+		Endereco endereco = enderecoService.buscar(dto.getCep());
+		cliente.setEndereco(endereco);
+		
 		cliente.setRole("CLIENTE");
 
 		if (dto.getIdusuario() != null) {
@@ -49,6 +64,7 @@ public class ClienteService {
 		try {
 			salvo = clienteRepository.save(cliente);
 		} catch (RuntimeException e) {
+			e.printStackTrace();
 			throw new InvalidFieldException("Erro ao salvar cliente, " + "Verifique os campos.");
 		}
 

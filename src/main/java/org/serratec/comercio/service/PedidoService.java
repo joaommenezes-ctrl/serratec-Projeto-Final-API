@@ -84,6 +84,47 @@ public class PedidoService {
 
         return new PedidoDTO(pedido);
     }
+    
+    @Transactional
+    public PedidoDTO atualizar(Long id, PedidoInserirDTO dto) throws InvalidFieldException {
+        Pedido pedidoExistente = pedidoRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Pedido não encontrado"));
+
+        pedidoExistente.setDataPedido(dto.getDataPedido());
+        pedidoExistente.setStatusPedido(dto.getStatusPedido());
+
+        Cliente cliente = clienteRepository.findById(dto.getClienteId())
+                .orElseThrow(() -> new RuntimeException("Cliente não encontrado"));
+        pedidoExistente.setCliente(cliente);
+
+        List<ItemPedido> itensAtualizados = new ArrayList<>();
+
+        if (dto.getItens() != null && !dto.getItens().isEmpty()) {
+            for (ItemPedidoInserirDTO itemDTO : dto.getItens()) {
+                Produto produto = produtoRepository.findById(itemDTO.getProdutoId())
+                        .orElseThrow(() -> new RuntimeException("Produto não encontrado: " + itemDTO.getProdutoId()));
+
+                ItemPedido item = new ItemPedido(
+                        pedidoExistente,
+                        produto,
+                        itemDTO.getQuantidade(),
+                        itemDTO.getValorVenda()
+                );
+                itensAtualizados.add(item);
+            }
+        }
+
+        try {
+            pedidoExistente.setItens(itensAtualizados);
+        } catch (RuntimeException e) {
+            throw new InvalidFieldException("Erro ao atualizar itens do pedido: verifique os campos");
+        }
+
+        pedidoExistente = pedidoRepository.save(pedidoExistente);
+
+        return new PedidoDTO(pedidoExistente);
+    }
+
 
     public void deletar(Long id) {
         pedidoRepository.deleteById(id);

@@ -2,6 +2,8 @@ package org.serratec.comercio.domain;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -9,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 @Entity
 public class Produto {
@@ -23,11 +26,12 @@ public class Produto {
 	@NotBlank
 	private String descricao;
 	
-	@NotBlank
+	@NotNull(message = "O preço é obrigatório")
 	private BigDecimal preco;
 	
 	@ManyToOne
-	@JoinColumn(name = "categoria")
+	@JoinColumn(name = "id.categoria")
+	@JsonBackReference
 	private Categoria categoria;
 
 	public Long getId() {
@@ -69,6 +73,8 @@ public class Produto {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
+
+	
 	
 	
 }

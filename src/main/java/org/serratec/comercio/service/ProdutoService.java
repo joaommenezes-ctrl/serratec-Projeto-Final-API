@@ -3,16 +3,22 @@ package org.serratec.comercio.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.serratec.comercio.domain.Categoria;
 import org.serratec.comercio.domain.Produto;
 import org.serratec.comercio.dto.ProdutoDTO;
 import org.serratec.comercio.exception.InvalidFieldException;
+import org.serratec.comercio.repository.CategoriaRepository;
 import org.serratec.comercio.repository.ProdutoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ProdutoService {
-
+	@Autowired
     private ProdutoRepository produtoRepository;
+    
+	@Autowired
+    private CategoriaRepository categoriaRepository;
 
     public ProdutoService(ProdutoRepository produtoRepository) {
         this.produtoRepository = produtoRepository;
@@ -38,14 +44,18 @@ public class ProdutoService {
         produto.setNome(dto.getNome());
         produto.setDescricao(dto.getDescricao());
         produto.setPreco(dto.getPreco());
-        Produto salvo;
+        
+		Categoria categoria = categoriaRepository.findById(dto.getIdCategoria())
+				.orElseThrow(() -> new RuntimeException("Categoria não encontrada com ID: " + dto.getIdCategoria()));
+        	
+		produto.setCategoria(categoria);
+		
         try {
-        	salvo = produtoRepository.save(produto);
+        	produto = produtoRepository.save(produto);
 		} catch (RuntimeException e) {
 			throw new InvalidFieldException("Erro ao salvar produto, " + "Verifique os campos obrigatórios.");
 		}
-        salvo = produtoRepository.save(produto);
-        return new ProdutoDTO(salvo);
+        return new ProdutoDTO(produto);
     }
 
     public ProdutoDTO atualizar(Long id, ProdutoDTO dto) {
@@ -54,6 +64,12 @@ public class ProdutoService {
         produto.setNome(dto.getNome());
         produto.setDescricao(dto.getDescricao());
         produto.setPreco(dto.getPreco());
+        
+        Categoria categoria = categoriaRepository.findById(dto.getIdCategoria())
+				.orElseThrow(() -> new RuntimeException("Categoria não encontrada com ID: " + dto.getIdCategoria()));
+        	
+		produto.setCategoria(categoria);
+		
         Produto atualizado = produtoRepository.save(produto);
         return new ProdutoDTO(atualizado);
     }

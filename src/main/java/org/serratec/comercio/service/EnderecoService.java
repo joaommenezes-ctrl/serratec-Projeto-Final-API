@@ -15,11 +15,11 @@ public class EnderecoService {
 	@Autowired
 	private EnderecoRepository enderecoRepository;
 	
-	public EnderecoDTO buscar(String cep) {
+	public Endereco buscar(String cep) {
 		Optional<Endereco> enderecoOpt = Optional.ofNullable(enderecoRepository.findByCep(cep));
 		if (enderecoOpt.isPresent()) {
 			Endereco endereco = enderecoOpt.get();
-			return new EnderecoDTO(endereco);
+			return endereco;
 		} else {
 			RestTemplate restTemplate = new RestTemplate();
 			String url = "http://viacep.com.br/ws/"+cep+"/json";
@@ -36,10 +36,9 @@ public class EnderecoService {
 		}
 	}
 	
-	private EnderecoDTO inserir(Endereco endereco) {
+	private Endereco inserir(Endereco endereco) {
 		endereco = enderecoRepository.save(endereco);
-		EnderecoDTO enderecoDTO = new EnderecoDTO(endereco);
-		return enderecoDTO;
+		return endereco;
 	}
 	
 }

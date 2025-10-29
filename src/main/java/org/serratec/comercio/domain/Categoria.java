@@ -2,6 +2,9 @@ package org.serratec.comercio.domain;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,7 +22,8 @@ public class Categoria {
 	@NotBlank(message = "O nome da categoria é obrigatório")
 	private String nome;
 	
-	@OneToMany(mappedBy = "categoria")
+	@OneToMany(mappedBy = "categoria", cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<Produto> produtos;
 
 	public Long getId() {
@@ -44,6 +48,11 @@ public class Categoria {
 
 	public void setProdutos(List<Produto> produtos) {
 		this.produtos = produtos;
+	}
+
+	public Long getIdCategoria() {
+
+		return null;
 	}
 	
 	

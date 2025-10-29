@@ -35,7 +35,7 @@ public class Cliente {
 	@Email
 	private String email;
 
-	@OneToOne
+	@OneToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "endereco_id")
 	private Endereco endereco;
 

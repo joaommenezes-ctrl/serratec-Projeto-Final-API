@@ -3,69 +3,81 @@ package org.serratec.comercio.dto;
 import org.serratec.comercio.domain.Endereco;
 
 public class EnderecoDTO {
-    private String cep;
-    private String logradouro;
-    private String complemento;
-    private String bairro;
-    private String localidade;
-    private String uf;
+	private String cep;
+	private String logradouro;
+	private String complemento;
+	private String bairro;
+	private String localidade;
+	private String uf;
+	
+	public EnderecoDTO() {
+	}
+	public EnderecoDTO(Endereco e) {
+		this.cep = e.getCep();
+		this.logradouro = e.getLogradouro();
+		this.complemento = e.getComplemento();
+		this.bairro = e.getBairro();
+		this.localidade = e.getLocalidade();
+		this.uf = e.getUf();
+	}
 
-    public EnderecoDTO(Endereco e) {
-        this.cep = e.getCep();
-        this.logradouro = e.getLogradouro();
-        this.complemento = e.getComplemento();
-        this.bairro = e.getBairro();
-        this.localidade = e.getLocalidade();
-        this.uf = e.getUf();
-    }
+	public String getCep() {
+		return cep;
+	}
 
-    public String getCep() {
-        return cep;
-    }
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
 
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
+	public String getLogradouro() {
+		return logradouro;
+	}
 
-    public String getLogradouro() {
-        return logradouro;
-    }
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
 
-    public void setLogradouro(String logradouro) {
-        this.logradouro = logradouro;
-    }
+	public String getComplemento() {
+		return complemento;
+	}
 
-    public String getComplemento() {
-        return complemento;
-    }
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
 
-    public void setComplemento(String complemento) {
-        this.complemento = complemento;
-    }
+	public String getBairro() {
+		return bairro;
+	}
 
-    public String getBairro() {
-        return bairro;
-    }
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
 
-    public void setBairro(String bairro) {
-        this.bairro = bairro;
-    }
+	public String getLocalidade() {
+		return localidade;
+	}
 
-    public String getLocalidade() {
-        return localidade;
-    }
+	public void setLocalidade(String localidade) {
+		this.localidade = localidade;
+	}
 
-    public void setLocalidade(String localidade) {
-        this.localidade = localidade;
-    }
+	public String getUf() {
+		return uf;
+	}
 
-    public String getUf() {
-        return uf;
-    }
+	public void setUf(String uf) {
+		this.uf = uf;
+	}
 
-    public void setUf(String uf) {
-        this.uf = uf;
-    }
+	public Endereco toEntity() {
+		Endereco endereco = new Endereco();
+		endereco.setCep(this.cep);
+		endereco.setLogradouro(this.logradouro);
+		endereco.setComplemento(this.complemento);
+		endereco.setBairro(this.bairro);
+		endereco.setLocalidade(this.localidade);
+		endereco.setUf(this.uf);
+		return endereco;
+	}
 
 }
-

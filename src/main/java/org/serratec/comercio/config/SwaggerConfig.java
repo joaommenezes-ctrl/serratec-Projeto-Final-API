@@ -16,7 +16,14 @@ public class SwaggerConfig {
         return new OpenAPI()
                 .info(new Info()
                         .title("API - Comércio Varejista")
-                        .description("Sistema de gerenciamento de pedidos, clientes e produtos do comércio varejista.")
+                        .description("Sistema de gerenciamento de pedidos, clientes e produtos do comércio varejista." 
+                        		+ " **Grupo 5:** "
+                        		+ "**João Menezes** |"
+                        		+ "| **Willian Lippi** |"
+                        		+ "| **José Arthur** |"
+                        		+ "| **Nicole Parisi** |"
+                        		+ "| **Nélio Ramos** |"
+                        		+ "| **Gabriel Belinski** ||.")
                         .version("1.0.0")
                         .contact(new Contact()
                                 .name("Equipe Serratec")
